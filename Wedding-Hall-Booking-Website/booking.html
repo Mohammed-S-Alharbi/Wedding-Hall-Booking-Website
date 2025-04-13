@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ليلة العمر - الحجز</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background-color: #fff8f9;
+      color: #3a3a3a;
+      padding: 20px;
+      direction: rtl;
+    }
+    h1 {
+      text-align: center;
+      color: #b87a8a;
+      margin-bottom: 30px;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #5a5a5a;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .checkbox-group label {
+      font-weight: normal;
+    }
+    #total {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #a86579;
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      background-color: #b87a8a;
+      color: white;
+      padding: 14px 25px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #a86579;
+    }
+  </style>
+</head>
+<body>
+<div style="width: 100%; margin-bottom: 40px;">
+  <a href="about.html">
+    <img src="images/face.jpg" alt="ليلة العمر" 
+         style="width: 100%; max-height: 200px; object-fit: cover; display: block;">
+  </a>
+</div>
+
+  <h1>احجز قاعتك الآن</h1>
+  <form onsubmit="return saveBooking()">
+    <label for="hall">اختر القاعة:</label>
+    <select id="hall" name="hall" onchange="updateBasePrice()">
+      <option value="قاعة النجوم" data-price="19500">قاعة النجوم</option>
+      <option value="قاعة الماسة" data-price="13000">قاعة الماسة</option>
+      <option value="قاعة الفخامة" data-price="22750">قاعة الفخامة</option>
+    </select>
+
+    <label for="date">تاريخ الحجز:</label>
+    <input type="date" id="date" name="date" required>
+
+    <label for="guests">عدد الحضور:</label>
+    <input type="number" id="guests" name="guests" placeholder="مثلاً: 200" required>
+
+    <label>الخدمات الإضافية:</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" value="بوفيه عشاء" data-cost="3000" onchange="calculateTotal()"> بوفيه عشاء (+3000 ريال)</label>
+      <label><input type="checkbox" value="تصوير فوتوغرافي" data-cost="2500" onchange="calculateTotal()"> تصوير فوتوغرافي (+2500 ريال)</label>
+      <label><input type="checkbox" value="تصوير فيديو" data-cost="2000" onchange="calculateTotal()"> تصوير فيديو (+2000 ريال)</label>
+      <label><input type="checkbox" value="فرقة موسيقية" data-cost="1500" onchange="calculateTotal()"> فرقة موسيقية (+1500 ريال)</label>
+      <label><input type="checkbox" value="ديكور وردي فاخر" data-cost="1800" onchange="calculateTotal()"> ديكور وردي فاخر (+1800 ريال)</label>
+    </div>
+
+
+    <div id="total">التكلفة الكاملة: <span id="totalAmount">0</span> ريال</div>
+    <button type="submit">تأكيد الحجز</button>
+  </form>
+
+<div style="text-align: center; margin-top: 40px;">
+  <a href="venues.html" style="background-color: #b87a8a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 1rem;">
+    استعرض القاعات
+  </a>
+</div>
+
+<div style="text-align: center; margin-top: 40px;">
+  <a href="contact.html" style="background-color: #b87a8a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 1rem;">
+    تواصل معنا
+  </a>
+</div>
+
+  <script>
+    function getSelectedHallPrice() {
+      const hallSelect = document.getElementById('hall');
+      const selectedOption = hallSelect.options[hallSelect.selectedIndex];
+      return parseInt(selectedOption.getAttribute('data-price'));
+    }
+
+    function calculateTotal() {
+      let total = getSelectedHallPrice();
+      const services = document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked');
+      services.forEach(service => {
+        total += parseInt(service.getAttribute('data-cost'));
+      });
+      document.getElementById('totalAmount').textContent = total;
+      return total;
+    }
+
+    function updateBasePrice() {
+      calculateTotal();
+    }
+
+    function saveBooking() {
+      const hall = document.getElementById('hall').value;
+      const date = document.getElementById('date').value;
+      const guests = document.getElementById('guests').value;
+      const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked');
+      const extras = Array.from(checkboxes).map(cb => cb.value);
+      const total = calculateTotal();
+
+      const newBooking = { hall, date, guests, extras, total };
+      const currentBookings = JSON.parse(localStorage.getItem('bookings')) || [];
+      currentBookings.push(newBooking);
+      localStorage.setItem('bookings', JSON.stringify(currentBookings));
+
+      alert('تم حفظ الحجز بنجاح! التكلفة: ' + total + ' ريال');
+      window.location.href = 'mybookings.html';
+      return false;
+    }
+
+    window.onload = calculateTotal;
+  </script>
+</body>
+</html>
