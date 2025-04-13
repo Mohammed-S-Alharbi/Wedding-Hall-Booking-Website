@@ -7,9 +7,9 @@
   <style>
     body {
       font-family: 'Cairo', sans-serif;
-      background-color: #fff8f9;
-      color: #3a3a3a;
-      padding: 40px;
+      background: linear-gradient(to bottom right, #fff0f5, #ffe4e9);
+      color: #333;
+      padding: 40px 20px;
       direction: rtl;
       margin: 0;
     }
@@ -17,13 +17,34 @@
       text-align: center;
       color: #b87a8a;
       margin-bottom: 30px;
+      font-size: 2.5rem;
     }
     p {
-      max-width: 700px;
+      max-width: 750px;
       margin: auto;
-      font-size: 1.2rem;
-      line-height: 2;
+      font-size: 1.3rem;
+      line-height: 2.2;
       text-align: justify;
+      background-color: #ffffffdd;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    .button-container {
+      text-align: center;
+      margin-top: 40px;
+    }
+    .custom-button {
+      background-color: #b87a8a;
+      color: white;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+    .custom-button:hover {
+      background-color: #a05f71;
     }
   </style>
 </head>
@@ -32,10 +53,8 @@
   <p>
     موقع "ليلة العمر" هو منصتك الموثوقة لتنظيم حفلات الزفاف والمناسبات الخاصة، حيث نوفر لك قاعات فاخرة، وخدمات متكاملة تجعل من مناسبتك لحظة لا تُنسى. هدفنا هو تسهيل تجربة الحجز وتقديم أفضل العروض والخدمات لتناسب ذوقك وميزانيتك.
   </p>
-<div style="text-align: center; margin-top: 40px;">
-  <a href="venues.html" style="background-color: #b87a8a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 1rem;">
-    استعرض القاعات
-  </a>
-</div>
+  <div class="button-container">
+    <a href="venues.html" class="custom-button">استعرض القاعات</a>
+  </div>
 </body>
 </html>
