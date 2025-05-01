@@ -1,0 +1,44 @@
+﻿@*
+    Shared layout file used by all views
+*@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Wedding Hall Booking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Link your CSS -->
+    <link rel="stylesheet" href="~/css/style.css" />
+
+    <!-- Add any external fonts or icons here if needed -->
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Wedding Hall Booking</h1>
+            <nav>
+                <a asp-controller="Home" asp-action="Index">Home</a>
+                <a asp-controller="Home" asp-action="About">About</a>
+                <a asp-controller="Home" asp-action="Booking">Booking</a>
+                <a asp-controller="Home" asp-action="Contact">Contact</a>
+                <a asp-controller="Home" asp-action="Venues">Venues</a>
+                <a asp-controller="Home" asp-action="Mybookings">My Bookings</a>
+                <a asp-controller="Home" asp-action="Register">Register</a>
+                <a asp-controller="Home" asp-action="Login">Login</a>
+                <a asp-controller="Home" asp-action="Logout">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; @DateTime.Now.Year - Wedding Hall Booking</p>
+        </div>
+    </footer>
+</body>
+</html>
