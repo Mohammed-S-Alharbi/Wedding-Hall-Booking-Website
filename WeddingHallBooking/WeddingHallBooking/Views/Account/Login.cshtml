@@ -1,0 +1,14 @@
+﻿<h2>Login</h2>
+
+<form asp-action="Login" method="post">
+    <label>Email</label>
+    <input name="email" class="form-control" />
+
+    <label>Password</label>
+    <input name="password" type="password" class="form-control" />
+
+    <br />
+    <button type="submit">Login</button>
+
+    <p class="text-danger">@ViewBag.Error</p>
+</form>

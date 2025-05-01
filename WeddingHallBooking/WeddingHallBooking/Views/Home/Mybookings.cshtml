@@ -1,0 +1,262 @@
+@* 
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ليلة العمر - حجوزاتي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #b87a8a;
+      --light: #fff8f9;
+      --text: #3a3a3a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background-color: var(--light);
+      color: var(--text);
+      padding: 20px;
+      direction: rtl;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 30px;
+      font-size: 2rem;
+    }
+
+    .booking-list {
+      max-width: 800px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .booking-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .booking-card h3 {
+      color: #a86579;
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .booking-card p {
+      margin: 5px 0;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .cancel-btn {
+      align-self: flex-start;
+      background-color: #ff5e5e;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .cancel-btn:hover {
+      background-color: #e04848;
+    }
+
+    @@media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .booking-card {
+        padding: 16px;
+      }
+
+      .booking-card h3 {
+        font-size: 1.1rem;
+      }
+
+      .booking-card p, .cancel-btn {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div style="width: 100%; margin-bottom: 40px;">
+  <a asp-controller="Home" asp-action="About">
+    <img src="images/face.jpg" alt="ليلة العمر" 
+         style="width: 100%; max-height: 200px; object-fit: cover; display: block;">
+  </a>
+
+  <h1>حجوزاتي</h1>
+  
+<div class="booking-list" id="bookingList"></div>
+
+<div style="text-align: center; margin-top: 20px;">
+  <a asp-controller="Home" asp-action="Venues" style="background-color: #b87a8a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 1rem;">
+    استعرض القاعات
+  </a>
+</div>
+
+<div style="text-align: center; margin-top: 40px;">
+  <a asp-controller="Home" asp-action="Contact" style="background-color: #b87a8a; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 1rem;">
+    تواصل معنا
+  </a>
+</div>
+  <script>
+    function getBookings() {
+      return JSON.parse(localStorage.getItem('bookings')) || [];
+    }
+
+    function saveBookings(bookings) {
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+    }
+
+    function renderBookings() {
+      const bookings = getBookings();
+      const bookingList = document.getElementById('bookingList');
+      bookingList.innerHTML = '';
+
+      if (bookings.length === 0) {
+        bookingList.innerHTML = '<p style="text-align:center; color:#999">لا توجد حجوزات حالياً.</p>';
+        return;
+      }
+
+      bookings.forEach((booking, index) => {
+        const card = document.createElement('div');
+        card.className = 'booking-card';
+        card.innerHTML = `
+          <h3>${booking.hall}</h3>
+          <p>📅 التاريخ: ${booking.date}</p>
+          <p>👥 عدد الحضور: ${booking.guests}</p>
+          <p>🎁 الخدمات: ${booking.extras.join('، ') || 'بدون خدمات إضافية'}</p>
+          <p>💰 التكلفة الإجمالية: ${booking.total} ريال</p>
+          <button class="cancel-btn" onclick="cancelBooking(${index})">إلغاء الحجز</button>
+        `;
+        bookingList.appendChild(card);
+      });
+    }
+
+    function cancelBooking(index) {
+      let bookings = getBookings();
+      if (confirm('هل أنت متأكد أنك تريد إلغاء هذا الحجز؟')) {
+        bookings.splice(index, 1);
+        saveBookings(bookings);
+        renderBookings();
+      }
+    }
+
+    renderBookings();
+  </script>
+</body>
+</html>
+ *@
+
+
+
+
+
+
+
+
+
+
+          @model IEnumerable<WeddingHallBooking.Models.Booking>
+@{
+    ViewBag.Title = "ليلة العمر - حجوزاتي";
+}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: #fff8f9;
+            color: #3a3a3a;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        h1 {
+            text-align: center;
+            color: #b87a8a;
+            margin-bottom: 30px;
+        }
+
+        .booking-list {
+            max-width: 800px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .booking-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+            .booking-card h3 {
+                color: #a86579;
+                margin: 0;
+                font-size: 1.2rem;
+            }
+
+            .booking-card p {
+                margin: 5px 0;
+                font-size: 1rem;
+                color: #555;
+            }
+    </style>
+</head>
+<body>
+    <h1>حجوزاتي</h1>
+
+    <div class="booking-list">
+        @if (!Model.Any())
+        {
+            <p style="text-align:center; color:#999">لا توجد حجوزات حالياً.</p>
+        }
+        else
+        {
+            foreach (var booking in Model)
+            {
+                <div class="booking-card">
+                    <h3>@booking.HallName</h3>
+                    <p>📅 التاريخ: @booking.EventDate.ToShortDateString()</p>
+                    <p>👥 عدد الحضور: @booking.GuestsCount</p>
+                    <p>🎁 الخدمات: @booking.Extras</p>
+                    <p>💰 التكلفة الإجمالية: @booking.TotalAmount ريال</p>
+                </div>
+            }
+        }
+    </div>
+</body>
+</html>
